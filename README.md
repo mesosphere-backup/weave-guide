@@ -29,11 +29,16 @@ For DC/OS CNI (container network interface) will be setup for weave, but will no
 
 mkdir -p /etc/cni/net.d
 
+Start weave via systemd:
+
+start weave-master
+
 Weave setup  will create a basic weave config file of /etc/cni/net.d/10-weave.conf  that we don’t put to use, the systemd unit contains the configuration. It will also copy weave files into /opt.cni/bin
 
 weave setup
 
-Weave will have added a systemd unit, but we don't need it since this systemd unit runs the weave proxy
+Weave will have added a systemd unit, but we don't need it since this systemd unit runs the weave proxy:
+
 systemctl disable weaveproxy
 
 Setup DC/OS for weave’s CNI module:
@@ -41,14 +46,9 @@ Setup DC/OS for weave’s CNI module:
 ln /etc/cni/net.d/10-weave.conf /opt/mesosphere/etc/dcos/network/cni/weave.conf
 cp /opt/cni/bin/* /opt/mesosphere/active/cni 
 
-Start weave:
-
-systemctl enable weave-master
-
 Check status:
 
 weave status
-
 
 ##2. INITIALIZE WEAVE ON LAST DC/OS MASTER
 
@@ -70,11 +70,17 @@ chmod a+x /usr/local/bin/weave
 For DC/OS CNI (container network interface) will be setup for weave, but will not be used at this time:
 
 mkdir -p /etc/cni/net.d
+
 Weave setup  will create a basic weave config file of /etc/cni/net.d/10-weave.conf  that we don’t put to use, the systemd unit contains the configuration. It will also copy weave files into /opt.cni/bin
+
+Start weave via systemd:
+
+systemctl start weave-agent
  
 weave setup
 
-Weave will have added a systemd unit, but we don't need it since this systemd unit runs the weave proxy
+Weave will have added a systemd unit, but we don't need it since this systemd unit runs the weave proxy:
+
 systemctl disable weaveproxy
 
 Setup DC/OS for weave’s CNI module:
@@ -82,11 +88,7 @@ Setup DC/OS for weave’s CNI module:
 ln /etc/cni/net.d/10-weave.conf /opt/mesosphere/etc/dcos/network/cni/weave.conf
 cp /opt/cni/bin/* /opt/mesosphere/active/cni
 
-Start weave:
-
-systemctl enable weave-agent
-
-Check status:
+Check weave status:
 
 weave status
 
