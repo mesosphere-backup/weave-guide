@@ -31,7 +31,7 @@ mkdir -p /etc/cni/net.d
 
 Start weave via systemd:
 
-start weave-master
+systemctl start weave-master
 
 Weave setup  will create a basic weave config file of /etc/cni/net.d/10-weave.conf  that we don’t put to use, the systemd unit contains the configuration. It will also copy weave files into /opt.cni/bin
 
