@@ -16,6 +16,7 @@ Weaves encryption has not been enabled yet in this configuration.
 ##1. INSTALL ON EACH DC/OS MASTER NODE
 
 Login as root and download the systemd unit:
+
 curl -f -o /etc/systemd/system/weave-master.service -O https://raw.githubusercontent.com/mesosphere/weave-guide/master/weave-master.service
 
 systemctl daemon-reload && systemctl enable weave-master
@@ -58,7 +59,9 @@ weave prime
 
 ##3. INSTALL ON EACH DC/OS AGENT NODE
 
-curl -f -o /etc/systemd/system/weave-master.service -O https://raw.githubusercontent.com/mesosphere/weave-guide/master/weave-agent.service
+Login as root and download the systemd unit:
+
+curl -f -o /etc/systemd/system/weave-agent.service -O https://raw.githubusercontent.com/mesosphere/weave-guide/master/weave-agent.service
 
 systemctl daemon-reload && systemctl enable weave-agent
 
