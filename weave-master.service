@@ -1,0 +1,41 @@
+# REVISION 2-28-17
+[Unit]
+Description=Weave Net, Weave proxy & Weave Docker Plugin for DC/OS Master
+Documentation=http://weave.works/docs
+# DC/OS’s mesos-dns is used to connect to initial weave peers, so wait for it to startup first
+# This is one of the last DC/OS services to startup.
+After=docker.service dcos.target dcos-mesos-dns.service
+Wants=docker.service dcos-mesos-dns.service
+
+[Service]
+Restart=always
+StartLimitInterval=0
+RestartSec=15
+
+EnvironmentFile=-/etc/weave.env
+
+# Start weave router without weave-dns since DC/OS uses mesos-dns
+# Do not restart weave when docker restarts, let systemd control weave
+# Use DC/OS master zookeeper DNS FQDNs (answered by mesos.dns, 
+# which is authoritative for .mesos, .zk, and .thisdcos.directory). These nodes will always exist,
+# and will resolve, even if DC/OS cluster is single master, 3 masters, or 5 masters. 
+# Thus weave will have a reliable set of seed nodes (all DC/OS masters) via DNS, 
+# and since weave is a mesh architecture it needs at least one bootstrap/seed node.  
+
+ExecStartPre=/usr/bin/weave launch-router --no-dns --no-restart zk-1.zk zk-2.zk zk-3.zk zk-4.zk zk-5.zk
+
+# todo: remove weave proxy unit installed by default and use this one instead
+ExecStartPre=/usr/bin/weave launch-proxy --no-restart 
+
+#Start the weave docker plugin, so docker can also use weave
+ExecStartPre=/usr/bin/weave launch-plugin --no-restart 
+
+ExecStart=/usr/bin/docker attach weave
+
+ExecStop=/usr/bin/weave stop-router
+ExecStop=/usr/bin/weave stop-proxy
+ExecStop=/usr/bin/weave stop-plugin
+
+[Install]
+WantedBy=dcos.target
+
