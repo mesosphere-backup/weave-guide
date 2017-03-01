@@ -3,7 +3,7 @@ Guide for installing Weave onto DC/OS - Experimental
 
 REVISION 2-28-17	
 
-OVERVIEW
+##OVERVIEW
 
 This is how to install weave on DC/OS 1.8. The install directions differ for the DC/OS masters and agents. Weave is preconfigured via systemd to use DC/OS's DNS to reach seed nodes, which are the weave instances running on the DC/OS master(s). Weave on the DC/OS agents is configured via systemd to be a weave dynamic peer (to use the --ipalloc-init=observer option), which allows DC/OS agent nodes to be transient and to not affect weave's mesh architecture. These directions do not work on coreos, and have only been tested on centos 7.2
 
@@ -13,7 +13,7 @@ Each container must use host mode networking, and will be multi-homed on DC/OS, 
 
 Weaves encryption has not been enabled yet in this configuration.  
 
-1. INSTALL ON EACH DC/OS MASTER NODE
+##1. INSTALL ON EACH DC/OS MASTER NODE
 
 Login as root and download the systemd unit:
 curl -f -o /etc/systemd/system/weave-master.service -O https://raw.githubusercontent.com/mesosphere/weave-guide/master/weave-master.service
@@ -50,13 +50,13 @@ Check status:
 weave status
 
 
-2. INITIALIZE WEAVE
+##2. INITIALIZE WEAVE ON LAST DC/OS MASTER
 
 Now that #1 has been accomplished on each DC/OS master node, it's time to initialize weave. On the last master run this command:
 
 weave prime
 
-3. INSTALL ON EACH DC/OS AGENT NODE
+##3. INSTALL ON EACH DC/OS AGENT NODE
 
 curl -f -o /etc/systemd/system/weave-master.service -O https://raw.githubusercontent.com/mesosphere/weave-guide/master/weave-agent.service
 
@@ -91,7 +91,7 @@ Check status:
 weave status
 
 
-4. SETUP DC/OS CONTAINER TO USE WEAVE
+##4. SETUP DC/OS CONTAINER TO USE WEAVE
 
 To enable a container, in the DC/OS app defiinition set the container to use host networking. Also add a docker parameter (in Container Settings screen) of 'net' with a value of 'weave'. The container will now be dual homed.
 
