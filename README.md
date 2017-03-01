@@ -24,6 +24,7 @@ systemctl daemon-reload && systemctl enable weave-master
 Download weave:
 
 curl -L git.io/weave -o /usr/local/bin/weave
+
 chmod a+x /usr/local/bin/weave
 
 For DC/OS CNI (container network interface) will be setup for weave, but will not be used at this time:
@@ -34,7 +35,7 @@ Start weave via systemd:
 
 systemctl start weave-master
 
-Weave setup  will create a basic weave config file of /etc/cni/net.d/10-weave.conf  that we don’t put to use, the systemd unit contains the configuration. It will also copy weave files into /opt.cni/bin
+Run weave setup. It will create a basic weave config file of /etc/cni/net.d/10-weave.conf  that we don’t put to use, the systemd unit contains the configuration. It will also copy weave files into /opt.cni/bin
 
 weave setup
 
@@ -68,18 +69,19 @@ systemctl daemon-reload && systemctl enable weave-agent
 Download weave:
 
 curl -L git.io/weave -o /usr/local/bin/weave
+
 chmod a+x /usr/local/bin/weave
 
 For DC/OS CNI (container network interface) will be setup for weave, but will not be used at this time:
 
 mkdir -p /etc/cni/net.d
 
-Weave setup  will create a basic weave config file of /etc/cni/net.d/10-weave.conf  that we don’t put to use, the systemd unit contains the configuration. It will also copy weave files into /opt.cni/bin
-
 Start weave via systemd:
 
 systemctl start weave-agent
- 
+
+Run weave setup. It will create a basic weave config file of /etc/cni/net.d/10-weave.conf  that we don’t put to use, the systemd unit contains the configuration. It will also copy weave files into /opt.cni/bin
+
 weave setup
 
 Weave will have added a systemd unit, but we don't need it since this systemd unit runs the weave proxy:
